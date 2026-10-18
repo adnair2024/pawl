@@ -81,6 +81,23 @@ describe("cli", () => {
     expect(JSON.parse(corrupt.stdout).systemMessage).toContain("corrupt");
   });
 
+  it("never silently disengages on an empty, zero-control, or newer-version baseline", () => {
+    const d = project();
+    mkdirSync(join(d, ".pawl"));
+    const commit = () => run(d, ["hook", "pre-commit"], hookIn(d, { command: "git commit -m x" }));
+    const msg = (r: ReturnType<typeof run>) => JSON.parse(r.stdout).systemMessage as string;
+    writeFileSync(join(d, ".pawl/baseline.json"), "");
+    expect(commit().status).toBe(0);
+    expect(msg(commit())).toContain("corrupt");
+    writeFileSync(join(d, ".pawl/baseline.json"), JSON.stringify({ version: 999, controls: [] }));
+    expect(commit().status).toBe(0);
+    expect(msg(commit())).toContain("newer pawl");
+    writeFileSync(join(d, ".pawl/baseline.json"), JSON.stringify({ version: 1, controls: [] }));
+    const zero = commit();
+    expect(zero.status).toBe(0);
+    expect(msg(zero)).toContain("no controls");
+  });
+
   it("blocks a commit when a tracked file has a syntax error", () => {
     const d = project();
     run(d, ["init"]);

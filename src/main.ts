@@ -89,6 +89,10 @@ async function hook(kind: string): Promise<number> {
     warn(`not checking this project (${loaded.reason}). ${loaded.detail}`);
     return 0;
   }
+  if (kind === "pre-commit" && loaded.baseline.controls.length === 0) {
+    warn("the baseline has no controls, so nothing is being protected. If this project has routes, policies or headers, run /pawl:init again.");
+    return 0;
+  }
 
   const result = await check(root, loaded.baseline, kind === "post-tool" && file ? [file] : undefined);
   const regressions = kind === "post-tool" ? result.regressions.filter((r) => !r.summary.includes("syntax error")) : result.regressions;
