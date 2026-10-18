@@ -1,0 +1,41 @@
+{
+  "name": "pawl",
+  "version": "0.1.0",
+  "description": "pawl stops Claude Code from quietly weakening your app’s security. It snapshots the controls you already have (Next.js route auth, Supabase row-level security, CORS, security headers) and blocks any commit that removes or loosens one unless you accept the change with a reason. Deterministic, local, no LLM calls. Built for vibe coders.",
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adnair2024/pawl.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/adnair2024/pawl/issues"
+  },
+  "homepage": "https://github.com/adnair2024/pawl#readme",
+  "dependencies": {
+    "@ast-grep/lang-python": "^0.0.6",
+    "@ast-grep/napi": "^0.51.0",
+    "node-sql-parser": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  },
+  "allowScripts": {
+    "@ast-grep/lang-python@0.0.6": true
+  },
+  "bin": {
+    "pawl": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
