@@ -169,13 +169,14 @@ describe("cli", () => {
 
   it("init says which frameworks are covered and warns about ones that are not", () => {
     const d = project();
-    writeFileSync(join(d, "package.json"), JSON.stringify({ dependencies: { next: "15", fastify: "5" } }));
+    writeFileSync(join(d, "package.json"), JSON.stringify({ dependencies: { next: "15", fastify: "5", koa: "2" } }));
     writeFileSync(join(d, "requirements.txt"), "flask==3.0\nrequests\n");
     const out = run(d, ["init"]).stdout;
     expect(out).toContain("Routes by framework: next-route 3");
-    expect(out).toContain("Not covered yet: Fastify, Flask");
+    expect(out).toContain("Not covered yet: Fastify, Koa");
+    expect(out).not.toContain("Flask");
     writeFileSync(join(d, "package.json"), JSON.stringify({ dependencies: { express: "5" } }));
     rmSync(join(d, "app"), { recursive: true });
-    expect(run(d, ["init"]).stdout).toContain("Express detected but no controls were found");
+    expect(run(d, ["init"]).stdout).toContain("Express, Flask detected but no controls were found");
   });
 });

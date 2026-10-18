@@ -1,9 +1,8 @@
-import { createHash } from "node:crypto";
-import { readFileSync, statSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync, statSync } from "node:fs";
 import { dirname, join, posix } from "node:path";
 import { listFiles } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
+import { FactsCache } from "./factsCache";
 import { boundNames, checksAndDenies, denies, guardsInBody, isFn, normalizeCallee, parseJs, unwrapAwait, type Node } from "./jsGuards";
 
 const CODE_FILE = /\.(ts|tsx|js|jsx|mjs|cjs)$/;
@@ -274,19 +273,6 @@ const mentionsExpress = (root: string, file: string): boolean => {
   }
 };
 
-type Cached = { mtimeMs: number; size: number; facts: FileFacts | { error: string } };
-
-/** Parsed results survive between hook runs, so an edit only re-parses the files that changed. */
-const cachePath = (root: string): string => join(tmpdir(), `pawl-express-${createHash("sha1").update(root).digest("hex").slice(0, 12)}.json`);
-
-function loadCache(root: string): Record<string, Cached> {
-  try {
-    return JSON.parse(readFileSync(cachePath(root), "utf8")) as Record<string, Cached>;
-  } catch {
-    return {};
-  }
-}
-
 export const expressRoutes: Inventorier = {
   name: "express-routes",
   handles: (p) => CODE_FILE.test(p),
@@ -297,8 +283,7 @@ export const expressRoutes: Inventorier = {
     return [...new Set([...files, ...all])];
   },
   async scan(root, files) {
-    const cache = loadCache(root);
-    const next: Record<string, Cached> = {};
+    const cache = new FactsCache<FileFacts | { error: string }>("express-1", root);
     const result: Inventory = { controls: [], unparsed: [] };
     const facts: FileFacts[] = [];
     for (const f of files.filter((p) => CODE_FILE.test(p))) {
@@ -311,18 +296,12 @@ export const expressRoutes: Inventorier = {
         continue;
       }
       if (!source.includes("express")) continue;
-      const hit = cache[f];
-      const entry: Cached = hit && hit.mtimeMs === st.mtimeMs && hit.size === st.size ? hit : { mtimeMs: st.mtimeMs, size: st.size, facts: factsForFile(f, source) };
-      next[f] = entry;
-      if ("error" in entry.facts) result.unparsed.push({ file: f, reason: entry.facts.error });
-      else facts.push(entry.facts);
+      const entry = cache.get(f, st, () => factsForFile(f, source));
+      if ("error" in entry) result.unparsed.push({ file: f, reason: entry.error });
+      else facts.push(entry);
     }
+    cache.save();
     result.controls = controlsFromFacts(facts);
-    try {
-      writeFileSync(cachePath(root), JSON.stringify({ ...cache, ...next }));
-    } catch {
-      /* cache is an optimisation only */
-    }
     return result;
   },
 };

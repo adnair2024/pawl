@@ -32,6 +32,16 @@ export function compare(
 
 const accept = (id: string) => `If this is intended, run: /pawl:accept ${id} "<reason>"`;
 
+/** How to put a lost guard back, in the terms of the framework the route is written in. */
+function restoreGuard(framework: string, guard: string): string {
+  if (framework === "fastapi") return `Add Depends(${guard.split("(")[0]}) back to the route, its router, or the include_router call.`;
+  if (framework === "flask") return `Put @${guard.split("(")[0]} back below the @route decorator (above it does nothing), or restore the before_request hook.`;
+  if (framework === "django") return `Restore ${guard} on the view (decorator, mixin placed before the View base, or permission_classes).`;
+  if (framework === "django-settings") return `Put ${guard} back in the setting.`;
+  if (framework === "express") return `Put the ${guard} middleware back on the route, its router, or where the router is mounted.`;
+  return `Call ${guard} at the top of the handler again.`;
+}
+
 function removed(c: Control): Regression {
   return {
     controlId: c.id,
@@ -51,8 +61,11 @@ function weaker(b: Control, a: Control): Regression | null {
       if (lost.length === 0) return null;
       return {
         ...base,
-        summary: `${b.id} no longer runs the auth check ${lost.join(", ")} before its handler.`,
-        restore: `Call ${lost[0]} at the top of the handler again. ${accept(b.id)}`,
+        summary:
+          b.framework === "django-settings"
+            ? `${b.id} no longer includes ${lost.join(", ")}, the rule that applies to every view that does not set its own.`
+            : `${b.id} no longer runs the auth check ${lost.join(", ")} before its handler.`,
+        restore: `${restoreGuard(b.framework, lost[0] ?? "the check")} ${accept(b.id)}`,
       };
     }
     case "rls-table": {

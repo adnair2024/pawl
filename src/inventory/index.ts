@@ -1,8 +1,11 @@
 import type { Inventorier, Inventory } from "../types";
+import { djangoRoutes } from "./djangoRoutes";
 import { expressRoutes } from "./expressRoutes";
+import { fastapiRoutes } from "./fastapiRoutes";
+import { flaskRoutes } from "./flaskRoutes";
 import { nextRoutes } from "./nextRoutes";
 
-export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes];
+export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes, fastapiRoutes, flaskRoutes, djangoRoutes];
 
 export const isTracked = (relPath: string): boolean => inventoriers.some((i) => i.handles(relPath));
 

@@ -10,9 +10,11 @@ const UNSUPPORTED_JS: Record<string, string> = {
   "@nestjs/core": "NestJS",
   "@hapi/hapi": "Hapi",
 };
-const PYTHON: Record<string, string> = { fastapi: "FastAPI", flask: "Flask", django: "Django" };
-/** Flip each to true as its reader lands. */
-const PYTHON_SUPPORTED = false;
+const PYTHON: Record<string, { label: string; supported: boolean }> = {
+  fastapi: { label: "FastAPI", supported: true },
+  flask: { label: "Flask", supported: true },
+  django: { label: "Django", supported: true },
+};
 
 export interface Detected {
   supported: string[];
@@ -41,8 +43,8 @@ export function detectFrameworks(root: string): Detected {
     else if (UNSUPPORTED_JS[d]) out.unsupported.push(UNSUPPORTED_JS[d]);
   }
   const py = (read(root, "requirements.txt") + read(root, "pyproject.toml") + read(root, "Pipfile")).toLowerCase();
-  for (const [key, label] of Object.entries(PYTHON)) {
-    if (new RegExp(`(^|[\\s"'\\[,])${key}([\\s"'=<>~!\\[,;]|$)`, "m").test(py)) (PYTHON_SUPPORTED ? out.supported : out.unsupported).push(label);
+  for (const [key, { label, supported }] of Object.entries(PYTHON)) {
+    if (new RegExp(`(^|[\\s"'\\[,])${key}([\\s"'=<>~!\\[,;]|$)`, "m").test(py)) (supported ? out.supported : out.unsupported).push(label);
   }
   return out;
 }

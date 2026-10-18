@@ -12,9 +12,11 @@ const UNSUPPORTED_JS = {
     "@nestjs/core": "NestJS",
     "@hapi/hapi": "Hapi",
 };
-const PYTHON = { fastapi: "FastAPI", flask: "Flask", django: "Django" };
-/** Flip each to true as its reader lands. */
-const PYTHON_SUPPORTED = false;
+const PYTHON = {
+    fastapi: { label: "FastAPI", supported: true },
+    flask: { label: "Flask", supported: true },
+    django: { label: "Django", supported: true },
+};
 const read = (root, file) => {
     try {
         return (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, file), "utf8");
@@ -40,9 +42,9 @@ function detectFrameworks(root) {
             out.unsupported.push(UNSUPPORTED_JS[d]);
     }
     const py = (read(root, "requirements.txt") + read(root, "pyproject.toml") + read(root, "Pipfile")).toLowerCase();
-    for (const [key, label] of Object.entries(PYTHON)) {
+    for (const [key, { label, supported }] of Object.entries(PYTHON)) {
         if (new RegExp(`(^|[\\s"'\\[,])${key}([\\s"'=<>~!\\[,;]|$)`, "m").test(py))
-            (PYTHON_SUPPORTED ? out.supported : out.unsupported).push(label);
+            (supported ? out.supported : out.unsupported).push(label);
     }
     return out;
 }

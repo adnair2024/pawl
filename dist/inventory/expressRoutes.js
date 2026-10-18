@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.expressRoutes = void 0;
 exports.factsForFile = factsForFile;
 exports.controlsFromFacts = controlsFromFacts;
-const node_crypto_1 = require("node:crypto");
 const node_fs_1 = require("node:fs");
-const node_os_1 = require("node:os");
 const node_path_1 = require("node:path");
 const files_1 = require("../files");
+const factsCache_1 = require("./factsCache");
 const jsGuards_1 = require("./jsGuards");
 const CODE_FILE = /\.(ts|tsx|js|jsx|mjs|cjs)$/;
 const ROUTE_METHODS = new Set(["get", "post", "put", "patch", "delete", "all", "head", "options"]);
@@ -284,16 +283,6 @@ const mentionsExpress = (root, file) => {
         return false;
     }
 };
-/** Parsed results survive between hook runs, so an edit only re-parses the files that changed. */
-const cachePath = (root) => (0, node_path_1.join)((0, node_os_1.tmpdir)(), `pawl-express-${(0, node_crypto_1.createHash)("sha1").update(root).digest("hex").slice(0, 12)}.json`);
-function loadCache(root) {
-    try {
-        return JSON.parse((0, node_fs_1.readFileSync)(cachePath(root), "utf8"));
-    }
-    catch {
-        return {};
-    }
-}
 exports.expressRoutes = {
     name: "express-routes",
     handles: (p) => CODE_FILE.test(p),
@@ -305,8 +294,7 @@ exports.expressRoutes = {
         return [...new Set([...files, ...all])];
     },
     async scan(root, files) {
-        const cache = loadCache(root);
-        const next = {};
+        const cache = new factsCache_1.FactsCache("express-1", root);
         const result = { controls: [], unparsed: [] };
         const facts = [];
         for (const f of files.filter((p) => CODE_FILE.test(p))) {
@@ -321,21 +309,14 @@ exports.expressRoutes = {
             }
             if (!source.includes("express"))
                 continue;
-            const hit = cache[f];
-            const entry = hit && hit.mtimeMs === st.mtimeMs && hit.size === st.size ? hit : { mtimeMs: st.mtimeMs, size: st.size, facts: factsForFile(f, source) };
-            next[f] = entry;
-            if ("error" in entry.facts)
-                result.unparsed.push({ file: f, reason: entry.facts.error });
+            const entry = cache.get(f, st, () => factsForFile(f, source));
+            if ("error" in entry)
+                result.unparsed.push({ file: f, reason: entry.error });
             else
-                facts.push(entry.facts);
+                facts.push(entry);
         }
+        cache.save();
         result.controls = controlsFromFacts(facts);
-        try {
-            (0, node_fs_1.writeFileSync)(cachePath(root), JSON.stringify({ ...cache, ...next }));
-        }
-        catch {
-            /* cache is an optimisation only */
-        }
         return result;
     },
 };

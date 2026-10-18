@@ -141,7 +141,7 @@ async function main(argv: string[]): Promise<number> {
       for (const c of b.controls) if (c.kind === "route-auth") perFramework.set(c.framework, (perFramework.get(c.framework) ?? 0) + 1);
       if (perFramework.size) console.log(`Routes by framework: ${[...perFramework].map(([f, n]) => `${f} ${n}`).join(", ")}`);
       if (found.supported.length && b.controls.length === 0) {
-        console.log(`Warning: ${found.supported.join(", ")} detected but no controls were found. Check that routes live where pawl looks (Next.js: app/**/route.ts; Express: files that import express).`);
+        console.log(`Warning: ${found.supported.join(", ")} detected but no controls were found. Check that routes live where pawl looks (Next.js: app/**/route.ts; Express, FastAPI, Flask and Django: files that import the framework).`);
       }
       if (found.unsupported.length) {
         console.log(`Not covered yet: ${found.unsupported.join(", ")}. pawl cannot see or protect routes written with these.`);
