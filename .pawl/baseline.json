@@ -1,0 +1,1392 @@
+{
+  "version": 1,
+  "createdAt": "2026-10-18T17:08:05.198Z",
+  "controls": [
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/demo-app/app/api/admin/route.ts#DELETE",
+      "file": "test/fixtures/demo-app/app/api/admin/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "requireAdmin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/demo-app/app/api/posts/route.ts#POST",
+      "file": "test/fixtures/demo-app/app/api/posts/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/demo-app/app/api/users/route.ts#GET",
+      "file": "test/fixtures/demo-app/app/api/users/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth.getUser"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-js-patterns/app/api/echo/route.ts#GET",
+      "file": "test/fixtures/headers-js-patterns/app/api/echo/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-js-patterns/app/api/open/route.ts#GET",
+      "file": "test/fixtures/headers-js-patterns/app/api/open/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-guard-removed/after/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-guard-removed/after/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-guard-removed/after/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-guard-removed/after/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-guard-removed/before/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-guard-removed/before/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-guard-removed/before/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-guard-removed/before/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-moved/after/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-moved/after/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-moved/after/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-moved/after/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-moved/before/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-moved/before/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-moved/before/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-moved/before/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-narrowed/after/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-narrowed/after/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-narrowed/after/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-narrowed/after/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-narrowed/before/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-narrowed/before/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-narrowed/before/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-narrowed/before/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-supabase-open/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-supabase-open/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-supabase-open/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-supabase-open/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-supabase/app/api/private/route.ts#GET",
+      "file": "test/fixtures/mw-supabase/app/api/private/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/mw-supabase/app/api/public/route.ts#GET",
+      "file": "test/fixtures/mw-supabase/app/api/public/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-guard-moved/after/app/api/users/route.ts#GET",
+      "file": "test/fixtures/next-guard-moved/after/app/api/users/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth.getUser"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-guard-moved/before/app/api/users/route.ts#GET",
+      "file": "test/fixtures/next-guard-moved/before/app/api/users/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth.getUser"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-guard-removed/after/app/api/users/route.ts#GET",
+      "file": "test/fixtures/next-guard-removed/after/app/api/users/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-guard-removed/before/app/api/users/route.ts#GET",
+      "file": "test/fixtures/next-guard-removed/before/app/api/users/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth.getUser"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/actions/post.ts#createPost",
+      "file": "test/fixtures/next-patterns/app/actions/post.ts",
+      "lang": "ts",
+      "framework": "next-action",
+      "guards": [
+        "getSession"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/actions/post.ts#publicPing",
+      "file": "test/fixtures/next-patterns/app/actions/post.ts",
+      "lang": "ts",
+      "framework": "next-action",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/api/admin/route.ts#POST",
+      "file": "test/fixtures/next-patterns/app/api/admin/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "auth",
+        "requireAdmin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/api/open/route.ts#GET",
+      "file": "test/fixtures/next-patterns/app/api/open/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/api/posts/route.ts#GET",
+      "file": "test/fixtures/next-patterns/app/api/posts/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": [
+        "withAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/next-patterns/app/api/posts/route.ts#DELETE",
+      "file": "test/fixtures/next-patterns/app/api/posts/route.ts",
+      "lang": "ts",
+      "framework": "next-route",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-moved/after/server.js#GET /a",
+      "file": "test/fixtures/express-guard-moved/after/server.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-moved/after/server.js#GET /b",
+      "file": "test/fixtures/express-guard-moved/after/server.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-moved/before/server.js#GET /a",
+      "file": "test/fixtures/express-guard-moved/before/server.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-moved/before/server.js#GET /b",
+      "file": "test/fixtures/express-guard-moved/before/server.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-removed/after/routes/admin.js#GET /users",
+      "file": "test/fixtures/express-guard-removed/after/routes/admin.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-removed/after/routes/admin.js#GET /stats",
+      "file": "test/fixtures/express-guard-removed/after/routes/admin.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-removed/before/routes/admin.js#GET /users",
+      "file": "test/fixtures/express-guard-removed/before/routes/admin.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth",
+        "requireAdmin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-guard-removed/before/routes/admin.js#GET /stats",
+      "file": "test/fixtures/express-guard-removed/before/routes/admin.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/admin.js#GET /stats",
+      "file": "test/fixtures/express-patterns/routes/admin.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth",
+        "requireRole(admin)"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/items.ts#POST /items",
+      "file": "test/fixtures/express-patterns/routes/items.ts",
+      "lang": "ts",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/items.ts#GET /items",
+      "file": "test/fixtures/express-patterns/routes/items.ts",
+      "lang": "ts",
+      "framework": "express",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/posts.js#POST /",
+      "file": "test/fixtures/express-patterns/routes/posts.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/posts.js#DELETE /:id",
+      "file": "test/fixtures/express-patterns/routes/posts.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth",
+        "requireRole(owner)"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/posts.js#GET /mine",
+      "file": "test/fixtures/express-patterns/routes/posts.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth",
+        "inline:req.user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/posts.js#GET /search",
+      "file": "test/fixtures/express-patterns/routes/posts.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/routes/public.js#GET /health",
+      "file": "test/fixtures/express-patterns/routes/public.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/express-patterns/server.js#GET /me",
+      "file": "test/fixtures/express-patterns/server.js",
+      "lang": "js",
+      "framework": "express",
+      "guards": [
+        "requireAuth"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-moved/after/app/main.py#GET /a",
+      "file": "test/fixtures/fastapi-guard-moved/after/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-moved/after/app/main.py#DELETE /b",
+      "file": "test/fixtures/fastapi-guard-moved/after/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user",
+        "require_admin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-moved/before/app/main.py#GET /a",
+      "file": "test/fixtures/fastapi-guard-moved/before/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-moved/before/app/main.py#DELETE /b",
+      "file": "test/fixtures/fastapi-guard-moved/before/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "require_admin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-removed/after/app/routers/users.py#GET /",
+      "file": "test/fixtures/fastapi-guard-removed/after/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-removed/after/app/routers/users.py#DELETE /{uid}",
+      "file": "test/fixtures/fastapi-guard-removed/after/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-removed/before/app/routers/users.py#GET /",
+      "file": "test/fixtures/fastapi-guard-removed/before/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-guard-removed/before/app/routers/users.py#DELETE /{uid}",
+      "file": "test/fixtures/fastapi-guard-removed/before/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "require_admin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-middleware/app/main.py#GET /a",
+      "file": "test/fixtures/fastapi-middleware/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "middleware:require_login"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-middleware/app/main.py#POST /b",
+      "file": "test/fixtures/fastapi-middleware/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "middleware:require_login"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/legacy.py#GET /legacy",
+      "file": "test/fixtures/fastapi-patterns/app/legacy.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/main.py#POST /export",
+      "file": "test/fixtures/fastapi-patterns/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/main.py#GET /health",
+      "file": "test/fixtures/fastapi-patterns/app/main.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/items.py#GET /",
+      "file": "test/fixtures/fastapi-patterns/app/routers/items.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/items.py#GET /mine",
+      "file": "test/fixtures/fastapi-patterns/app/routers/items.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user",
+        "get_current_active_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/items.py#POST /",
+      "file": "test/fixtures/fastapi-patterns/app/routers/items.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_user",
+        "inline:401"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/public.py#GET /ping",
+      "file": "test/fixtures/fastapi-patterns/app/routers/public.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/public.py#GET /feed",
+      "file": "test/fixtures/fastapi-patterns/app/routers/public.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/users.py#GET /",
+      "file": "test/fixtures/fastapi-patterns/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/users.py#DELETE /{uid}",
+      "file": "test/fixtures/fastapi-patterns/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "require_admin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/fastapi-patterns/app/routers/users.py#GET /me",
+      "file": "test/fixtures/fastapi-patterns/app/routers/users.py",
+      "lang": "py",
+      "framework": "fastapi",
+      "guards": [
+        "get_current_active_user"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-moved/after/app.py#GET /a",
+      "file": "test/fixtures/flask-guard-moved/after/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-moved/before/app.py#GET /a",
+      "file": "test/fixtures/flask-guard-moved/before/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-removed/after/views/users.py#GET /",
+      "file": "test/fixtures/flask-guard-removed/after/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-removed/after/views/users.py#DELETE /<int:uid>",
+      "file": "test/fixtures/flask-guard-removed/after/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-removed/before/views/users.py#GET /",
+      "file": "test/fixtures/flask-guard-removed/before/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "before_request:require_login"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-guard-removed/before/views/users.py#DELETE /<int:uid>",
+      "file": "test/fixtures/flask-guard-removed/before/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "before_request:require_login",
+        "admin_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /dashboard",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /oops",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /api/items",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "jwt_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#POST /api/items",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "jwt_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /api/maybe",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/app.py#GET /settings",
+      "file": "test/fixtures/flask-patterns/app.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "inline:401"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/views/public.py#GET /ping",
+      "file": "test/fixtures/flask-patterns/views/public.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/views/public.py#GET /internal",
+      "file": "test/fixtures/flask-patterns/views/public.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/views/users.py#GET /",
+      "file": "test/fixtures/flask-patterns/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "before_request:require_login"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/flask-patterns/views/users.py#DELETE /<int:uid>",
+      "file": "test/fixtures/flask-patterns/views/users.py",
+      "lang": "py",
+      "framework": "flask",
+      "guards": [
+        "before_request:require_login",
+        "admin_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/after/settings.py#REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES",
+      "file": "test/fixtures/django-guard-moved/after/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/after/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/django-guard-moved/after/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/after/shop/views.py#profile",
+      "file": "test/fixtures/django-guard-moved/after/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/after/shop/views.py#Orders",
+      "file": "test/fixtures/django-guard-moved/after/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/before/settings.py#REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES",
+      "file": "test/fixtures/django-guard-moved/before/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/before/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/django-guard-moved/before/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/before/shop/views.py#profile",
+      "file": "test/fixtures/django-guard-moved/before/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-moved/before/shop/views.py#Orders",
+      "file": "test/fixtures/django-guard-moved/before/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/after/settings.py#REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES",
+      "file": "test/fixtures/django-guard-removed/after/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/after/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/django-guard-removed/after/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/after/shop/views.py#profile",
+      "file": "test/fixtures/django-guard-removed/after/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/after/shop/views.py#Dash",
+      "file": "test/fixtures/django-guard-removed/after/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/after/shop/views.py#Defaulted",
+      "file": "test/fixtures/django-guard-removed/after/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/before/settings.py#REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES",
+      "file": "test/fixtures/django-guard-removed/before/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/before/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/django-guard-removed/before/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/before/shop/views.py#profile",
+      "file": "test/fixtures/django-guard-removed/before/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/before/shop/views.py#Dash",
+      "file": "test/fixtures/django-guard-removed/before/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "LoginRequiredMixin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-guard-removed/before/shop/views.py#Defaulted",
+      "file": "test/fixtures/django-guard-removed/before/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/settings.py#REST_FRAMEWORK.DEFAULT_PERMISSION_CLASSES",
+      "file": "test/fixtures/django-patterns/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/django-patterns/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#home",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#profile",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "login_required"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#edit",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "permission_required(shop.change_item)"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#secret",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "inline:denied"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#Dash",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "LoginRequiredMixin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#Wrong",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#Reports",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "StaffRequiredMixin"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#api_default",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#api_open",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#api_owned",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "IsAuthenticated",
+        "IsOwner"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#Orders",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": [
+        "IsAuthenticated"
+      ]
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#OpenThing",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/django-patterns/shop/views.py#Defaulted",
+      "file": "test/fixtures/django-patterns/shop/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-py-patterns/django_proj/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/headers-py-patterns/django_proj/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-py-patterns/django_proj/views.py#api",
+      "file": "test/fixtures/headers-py-patterns/django_proj/views.py",
+      "lang": "py",
+      "framework": "django",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-py-removed/after/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/headers-py-removed/after/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "route-auth",
+      "id": "test/fixtures/headers-py-removed/before/settings.py#MIDDLEWARE",
+      "file": "test/fixtures/headers-py-removed/before/settings.py",
+      "lang": "py",
+      "framework": "django-settings",
+      "guards": []
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/after/supabase:public.profiles",
+      "file": "test/fixtures/rls-moved/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "own profile",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/after/supabase:public.posts",
+      "file": "test/fixtures/rls-moved/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "no anon",
+          "command": "all",
+          "open": false
+        },
+        {
+          "name": "owner write",
+          "command": "all",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/after/supabase:public.comments",
+      "file": "test/fixtures/rls-moved/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "c_read",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/after/supabase:public.tags",
+      "file": "test/fixtures/rls-moved/after/supabase/migrations/20240115000000_rls.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": []
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/before/supabase:public.profiles",
+      "file": "test/fixtures/rls-moved/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "own profile",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/before/supabase:public.posts",
+      "file": "test/fixtures/rls-moved/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "owner write",
+          "command": "all",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-moved/before/supabase:public.comments",
+      "file": "test/fixtures/rls-moved/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "c_read",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-patterns/supabase:public.profiles",
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "own profile",
+          "command": "select",
+          "open": false
+        },
+        {
+          "name": "update own",
+          "command": "update",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-patterns/supabase:public.posts",
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "owner write",
+          "command": "all",
+          "open": false
+        },
+        {
+          "name": "public read",
+          "command": "select",
+          "open": true
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-patterns/supabase:public.audit",
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": false,
+      "policies": []
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-patterns/supabase:public.secrets",
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "block anon",
+          "command": "all",
+          "open": false
+        },
+        {
+          "name": "service only",
+          "command": "all",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-patterns/supabase:public.comments",
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240102000000_more.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "c_read",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/after/supabase:public.profiles",
+      "file": "test/fixtures/rls-policy-removed/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": false,
+      "policies": [
+        {
+          "name": "own profile",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/after/supabase:public.posts",
+      "file": "test/fixtures/rls-policy-removed/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": []
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/after/supabase:public.comments",
+      "file": "test/fixtures/rls-policy-removed/after/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "c_read",
+          "command": "select",
+          "open": true
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/after/supabase:public.invoices",
+      "file": "test/fixtures/rls-policy-removed/after/supabase/migrations/20240201000000_oops.sql",
+      "lang": "sql",
+      "rlsEnabled": false,
+      "policies": []
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/before/supabase:public.profiles",
+      "file": "test/fixtures/rls-policy-removed/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "own profile",
+          "command": "select",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/before/supabase:public.posts",
+      "file": "test/fixtures/rls-policy-removed/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "owner write",
+          "command": "all",
+          "open": false
+        }
+      ]
+    },
+    {
+      "kind": "rls-table",
+      "id": "test/fixtures/rls-policy-removed/before/supabase:public.comments",
+      "file": "test/fixtures/rls-policy-removed/before/supabase/migrations/20240101000000_init.sql",
+      "lang": "sql",
+      "rlsEnabled": true,
+      "policies": [
+        {
+          "name": "c_read",
+          "command": "select",
+          "open": false
+        }
+      ]
+    }
+  ],
+  "unparsed": [],
+  "partial": [
+    {
+      "file": "test/fixtures/rls-patterns/supabase/migrations/20240102000000_more.sql",
+      "reason": "a DO block that may change row-level security was not analyzed"
+    }
+  ]
+}
