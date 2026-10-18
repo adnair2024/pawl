@@ -18,3 +18,7 @@ export function listFiles(root: string): string[] {
   walk(root);
   return out.sort();
 }
+
+/** Test and fixture code mentions headers without sending them; it must not count as protection. */
+export const isTestPath = (p: string): boolean =>
+  /(^|\/)(tests?|__tests__|spec|e2e|cypress|fixtures)\//.test(p) || /\.(test|spec)\.[cm]?[jt]sx?$/.test(p) || /(^|\/)test_[^/]*\.py$|_test\.py$|(^|\/)conftest\.py$/.test(p);

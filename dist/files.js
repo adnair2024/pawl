@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTestPath = void 0;
 exports.listFiles = listFiles;
 const node_fs_1 = require("node:fs");
 const node_path_1 = require("node:path");
@@ -21,3 +22,6 @@ function listFiles(root) {
     walk(root);
     return out.sort();
 }
+/** Test and fixture code mentions headers without sending them; it must not count as protection. */
+const isTestPath = (p) => /(^|\/)(tests?|__tests__|spec|e2e|cypress|fixtures)\//.test(p) || /\.(test|spec)\.[cm]?[jt]sx?$/.test(p) || /(^|\/)test_[^/]*\.py$|_test\.py$|(^|\/)conftest\.py$/.test(p);
+exports.isTestPath = isTestPath;

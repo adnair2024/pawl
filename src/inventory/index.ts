@@ -4,9 +4,11 @@ import { expressRoutes } from "./expressRoutes";
 import { fastapiRoutes } from "./fastapiRoutes";
 import { flaskRoutes } from "./flaskRoutes";
 import { supabaseRls } from "./supabaseRls";
+import { jsHeaders } from "./jsHeaders";
+import { pyHeaders } from "./pyHeaders";
 import { nextRoutes } from "./nextRoutes";
 
-export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes, fastapiRoutes, flaskRoutes, djangoRoutes, supabaseRls];
+export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes, fastapiRoutes, flaskRoutes, djangoRoutes, supabaseRls, jsHeaders, pyHeaders];
 
 export const isTracked = (relPath: string): boolean => inventoriers.some((i) => i.handles(relPath));
 

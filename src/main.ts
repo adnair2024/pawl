@@ -117,6 +117,10 @@ async function status(root: string): Promise<void> {
   for (const c of baseline.controls) counts.set(c.kind, (counts.get(c.kind) ?? 0) + 1);
   console.log(`Tracked controls: ${baseline.controls.length}`);
   for (const [k, n] of counts) console.log(`  ${k}: ${n}`);
+  const headerNames = baseline.controls.flatMap((c) => (c.kind === "header" ? [c.header] : []));
+  if (headerNames.length) console.log(`Security headers: ${headerNames.join(", ")}`);
+  const openCors = baseline.controls.filter((c) => c.kind === "cors" && (c.origin === "wildcard" || c.origin === "reflect"));
+  if (openCors.length) console.log(`CORS open to any website: ${openCors.map((c) => c.file).join(", ")}`);
   const rlsOff = baseline.controls.filter((c) => c.kind === "rls-table" && !c.rlsEnabled);
   if (rlsOff.length) console.log(`Tables with row-level security off: ${rlsOff.map((c) => c.id).join(", ")}`);
   const unprotected = baseline.controls.filter((c) => c.kind === "route-auth" && c.guards.length === 0);
@@ -152,6 +156,12 @@ async function main(argv: string[]): Promise<number> {
       if (open.length) {
         console.log(`Warning: row-level security (per-user data access rules) is OFF for ${open.length} table(s): ${open.join(", ")}. Anyone with your public API key can read and change every row in them. pawl records this as the starting point and will not block it, but you probably want to turn it on.`);
       }
+      const openCors = b.controls.filter((c) => c.kind === "cors" && (c.origin === "wildcard" || c.origin === "reflect"));
+      if (openCors.length) {
+        console.log(`Warning: CORS (which websites may call your API) lets ANY website through in: ${openCors.map((c) => `${c.file} (${c.kind === "cors" ? c.origin : ""})`).join(", ")}. pawl records this as the starting point and will not block it, but if the API uses cookies or logins you probably want an explicit list of origins.`);
+      }
+      const headerNames = b.controls.flatMap((c) => (c.kind === "header" ? [c.header] : []));
+      if (headerNames.length) console.log(`Security headers found: ${headerNames.join(", ")}`);
       for (const p of b.partial ?? []) console.log(`Not fully analyzed: ${p.file} (${p.reason}). pawl cannot confirm what it does to row-level security.`);
       if (b.unparsed.length) console.log(`Could not parse (not treated as safe): ${b.unparsed.map((u) => u.file).join(", ")}`);
       return 0;

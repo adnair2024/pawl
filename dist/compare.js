@@ -15,7 +15,9 @@ function compare(baseline, current, scope) {
             continue;
         const after = now.get(before.id);
         if (!after) {
-            out.push(removed(before));
+            // No CORS rule at all means same-origin only, which is stricter, so it is not a loss.
+            if (before.kind !== "cors")
+                out.push(removed(before));
             continue;
         }
         if (after.kind !== before.kind)
@@ -24,8 +26,20 @@ function compare(baseline, current, scope) {
         if (r)
             out.push(r);
     }
-    // A table that did not exist at baseline and has row-level security off is exposed from day one.
     const known = new Set(baseline.map((c) => c.id));
+    // A CORS rule in a file that had none, letting any website call the API.
+    for (const c of current) {
+        if (c.kind !== "cors" || known.has(c.id) || ORIGIN_RANK[c.origin] < ORIGIN_RANK.reflect || (scope && !scope.has(c.file)))
+            continue;
+        out.push({
+            controlId: c.id,
+            file: c.file,
+            kind: c.kind,
+            summary: `${c.file} has a new CORS rule (which websites may call your API) that is ${c.origin === "wildcard" ? "open to every website" : "echoing back whichever website asks"}.`,
+            restore: `Use an explicit list of allowed origins instead. ${accept(c.id)}`,
+        });
+    }
+    // A table that did not exist at baseline and has row-level security off is exposed from day one.
     for (const c of current) {
         if (c.kind !== "rls-table" || c.rlsEnabled || known.has(c.id) || (scope && !scope.has(c.file)))
             continue;
@@ -57,6 +71,15 @@ function restoreGuard(framework, guard) {
     return `Call ${guard} at the top of the handler again.`;
 }
 function removed(c) {
+    if (c.kind === "header") {
+        return {
+            controlId: c.id,
+            file: c.file,
+            kind: c.kind,
+            summary: `The ${c.header} security header is no longer set anywhere in the project (it used to be set in ${c.file}).`,
+            restore: `Set ${c.header} again where the app sends responses (framework config, middleware, or a library like helmet). ${accept(c.id)}`,
+        };
+    }
     return {
         controlId: c.id,
         file: c.file,
