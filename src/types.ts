@@ -19,7 +19,8 @@ export type Control =
       file: string;
       lang: "sql";
       rlsEnabled: boolean;
-      policies: { name: string; command: string; permissive: boolean }[];
+      /** `open`: a permissive policy whose USING / WITH CHECK is literally `true` for a non-admin role. */
+      policies: { name: string; command: string; open: boolean }[];
     }
   | {
       kind: "cors";
@@ -42,6 +43,8 @@ export interface Baseline {
   controls: Control[];
   /** Things we could not parse. Reported, never treated as safe. */
   unparsed: { file: string; reason: string }[];
+  /** Parsed fine, but part of it (e.g. a DO block that runs dynamic SQL) could not be followed. Visible, not blocking. */
+  partial?: { file: string; reason: string }[];
 }
 
 export interface Regression {
@@ -55,6 +58,7 @@ export interface Regression {
 export interface Inventory {
   controls: Control[];
   unparsed: { file: string; reason: string }[];
+  partial?: { file: string; reason: string }[];
 }
 
 /** One implementation per language/framework family. */

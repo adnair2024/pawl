@@ -32,6 +32,14 @@ export class FactsCache<T> {
     return facts;
   }
 
+  async getAsync(file: string, stat: { mtimeMs: number; size: number }, compute: () => Promise<T>): Promise<T> {
+    const hit = this.data[file];
+    if (hit && hit.mtimeMs === stat.mtimeMs && hit.size === stat.size) return hit.facts;
+    const facts = await compute();
+    this.data[file] = { mtimeMs: stat.mtimeMs, size: stat.size, facts };
+    return facts;
+  }
+
   save(): void {
     try {
       writeFileSync(this.path, JSON.stringify(this.data));

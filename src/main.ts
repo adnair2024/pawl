@@ -117,6 +117,8 @@ async function status(root: string): Promise<void> {
   for (const c of baseline.controls) counts.set(c.kind, (counts.get(c.kind) ?? 0) + 1);
   console.log(`Tracked controls: ${baseline.controls.length}`);
   for (const [k, n] of counts) console.log(`  ${k}: ${n}`);
+  const rlsOff = baseline.controls.filter((c) => c.kind === "rls-table" && !c.rlsEnabled);
+  if (rlsOff.length) console.log(`Tables with row-level security off: ${rlsOff.map((c) => c.id).join(", ")}`);
   const unprotected = baseline.controls.filter((c) => c.kind === "route-auth" && c.guards.length === 0);
   if (unprotected.length) console.log(`Routes with no auth check: ${unprotected.map((c) => c.id).join(", ")}`);
   const { regressions, unparsed } = await check(root, baseline);
@@ -146,6 +148,11 @@ async function main(argv: string[]): Promise<number> {
       if (found.unsupported.length) {
         console.log(`Not covered yet: ${found.unsupported.join(", ")}. pawl cannot see or protect routes written with these.`);
       }
+      const open = b.controls.filter((c) => c.kind === "rls-table" && !c.rlsEnabled).map((c) => c.id);
+      if (open.length) {
+        console.log(`Warning: row-level security (per-user data access rules) is OFF for ${open.length} table(s): ${open.join(", ")}. Anyone with your public API key can read and change every row in them. pawl records this as the starting point and will not block it, but you probably want to turn it on.`);
+      }
+      for (const p of b.partial ?? []) console.log(`Not fully analyzed: ${p.file} (${p.reason}). pawl cannot confirm what it does to row-level security.`);
       if (b.unparsed.length) console.log(`Could not parse (not treated as safe): ${b.unparsed.map((u) => u.file).join(", ")}`);
       return 0;
     }

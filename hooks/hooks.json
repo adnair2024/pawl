@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook post-tool",
+            "command": "node --liftoff-only \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook post-tool",
             "timeout": 10
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook stop",
+            "command": "node --liftoff-only \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook stop",
             "timeout": 60
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook guard",
+            "command": "node --liftoff-only \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook guard",
             "timeout": 10
           }
         ]
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook pre-commit",
+            "command": "node --liftoff-only \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook pre-commit",
             "timeout": 60
           }
         ]
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook prompt",
+            "command": "node --liftoff-only \"${CLAUDE_PLUGIN_ROOT}/dist/cli.js\" hook prompt",
             "timeout": 10
           }
         ]

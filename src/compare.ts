@@ -27,8 +27,24 @@ export function compare(
     const r = weaker(before, after);
     if (r) out.push(r);
   }
+
+  // A table that did not exist at baseline and has row-level security off is exposed from day one.
+  const known = new Set(baseline.map((c) => c.id));
+  for (const c of current) {
+    if (c.kind !== "rls-table" || c.rlsEnabled || known.has(c.id) || (scope && !scope.has(c.file))) continue;
+    out.push({
+      controlId: c.id,
+      file: c.file,
+      kind: c.kind,
+      summary: `New table ${tableOf(c.id)} has row-level security (per-user data access rules) off, so anyone with your public API key can read and change every row.`,
+      restore: `Add ALTER TABLE ${tableOf(c.id)} ENABLE ROW LEVEL SECURITY; and a policy for who may access it. ${accept(c.id)}`,
+    });
+  }
   return out;
 }
+
+/** Control ids for tables in a nested Supabase project look like "apps/web/supabase:public.users". */
+const tableOf = (id: string): string => id.split(":").pop() ?? id;
 
 const accept = (id: string) => `If this is intended, run: /pawl:accept ${id} "<reason>"`;
 
@@ -74,7 +90,7 @@ function weaker(b: Control, a: Control): Regression | null {
         return {
           ...base,
           summary: `Row-level security (per-user data access rules) is now off for ${b.id}.`,
-          restore: `Re-enable it with ALTER TABLE ${b.id} ENABLE ROW LEVEL SECURITY. ${accept(b.id)}`,
+          restore: `Re-enable it with ALTER TABLE ${tableOf(b.id)} ENABLE ROW LEVEL SECURITY. ${accept(b.id)}`,
         };
       }
       const names = new Set(x.policies.map((p) => p.name));
@@ -86,7 +102,7 @@ function weaker(b: Control, a: Control): Regression | null {
           restore: `Recreate the dropped policy. ${accept(b.id)}`,
         };
       }
-      const loosened = x.policies.filter((p) => b.policies.some((o) => o.name === p.name && !o.permissive && p.permissive));
+      const loosened = x.policies.filter((p) => b.policies.some((o) => o.name === p.name && !o.open && p.open));
       if (loosened.length) {
         return {
           ...base,

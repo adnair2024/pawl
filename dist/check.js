@@ -66,6 +66,7 @@ async function init(root) {
         createdAt: new Date().toISOString(),
         controls: inv.controls,
         unparsed: inv.unparsed,
+        ...(inv.partial?.length ? { partial: inv.partial } : {}),
     };
     (0, baseline_1.writeBaseline)(root, baseline);
     return baseline;
@@ -91,12 +92,11 @@ async function accept(root, controlId, reason) {
     if (!loaded.ok)
         return { ok: false, error: loaded.detail };
     const { baseline } = loaded;
-    const before = baseline.controls.find((c) => c.id === controlId);
-    if (!before)
-        return { ok: false, error: `No control with id "${controlId}" in the baseline.` };
-    const { regressions, current } = await check(root, baseline, [before.file]);
+    const before = baseline.controls.find((c) => c.id === controlId) ?? null;
+    // A control the baseline never had (a brand-new table without RLS) is found by a full check.
+    const { regressions, current } = await check(root, baseline, before ? [before.file] : undefined);
     if (!regressions.some((r) => r.controlId === controlId)) {
-        return { ok: false, error: `"${controlId}" has not regressed, so there is nothing to accept.` };
+        return { ok: false, error: before ? `"${controlId}" has not regressed, so there is nothing to accept.` : `No control with id "${controlId}" in the baseline or the project.` };
     }
     const after = current.controls.find((c) => c.id === controlId) ?? null;
     (0, ledger_1.appendLedger)(root, { timestamp: new Date().toISOString(), controlId, before, after, reason: reason.trim() });

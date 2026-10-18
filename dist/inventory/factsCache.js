@@ -31,6 +31,14 @@ class FactsCache {
         this.data[file] = { mtimeMs: stat.mtimeMs, size: stat.size, facts };
         return facts;
     }
+    async getAsync(file, stat, compute) {
+        const hit = this.data[file];
+        if (hit && hit.mtimeMs === stat.mtimeMs && hit.size === stat.size)
+            return hit.facts;
+        const facts = await compute();
+        this.data[file] = { mtimeMs: stat.mtimeMs, size: stat.size, facts };
+        return facts;
+    }
     save() {
         try {
             (0, node_fs_1.writeFileSync)(this.path, JSON.stringify(this.data));

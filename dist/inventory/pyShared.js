@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefIndex = exports.lastSegment = void 0;
 exports.parsePy = parsePy;
@@ -15,12 +12,12 @@ exports.importsOf = importsOf;
 exports.resolveModule = resolveModule;
 exports.resolveRef = resolveRef;
 const napi_1 = require("@ast-grep/napi");
-const lang_python_1 = __importDefault(require("@ast-grep/lang-python"));
 let registered = false;
 function parsePy(source) {
     try {
         if (!registered) {
-            (0, napi_1.registerDynamicLanguage)({ python: lang_python_1.default });
+            // Loaded on first parse so runs that only touch other languages skip the grammar.
+            (0, napi_1.registerDynamicLanguage)({ python: require("@ast-grep/lang-python") });
             registered = true;
         }
         const root = (0, napi_1.parse)("python", source).root();

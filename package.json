@@ -20,7 +20,8 @@
   "homepage": "https://github.com/adnair2024/pawl#readme",
   "dependencies": {
     "@ast-grep/lang-python": "^0.0.6",
-    "@ast-grep/napi": "^0.51.0"
+    "@ast-grep/napi": "^0.51.0",
+    "libpg-query": "^18.1.5"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

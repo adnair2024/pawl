@@ -19,7 +19,7 @@ function project(): string {
   return d;
 }
 const run = (cwd: string, args: string[], stdin = "") =>
-  spawnSync(process.execPath, [CLI, ...args], { cwd, input: stdin, encoding: "utf8" });
+  spawnSync(process.execPath, ["--liftoff-only", CLI, ...args], { cwd, input: stdin, encoding: "utf8" });
 const hookIn = (cwd: string, tool_input: object, extra: object = {}) => JSON.stringify({ cwd, tool_input, ...extra });
 const stripGuard = (d: string) =>
   writeFileSync(join(d, "app/api/posts/route.ts"), 'export async function POST() { return Response.json({ ok: true }); }\n');
@@ -178,5 +178,30 @@ describe("cli", () => {
     writeFileSync(join(d, "package.json"), JSON.stringify({ dependencies: { express: "5" } }));
     rmSync(join(d, "app"), { recursive: true });
     expect(run(d, ["init"]).stdout).toContain("Express, Flask detected but no controls were found");
+  });
+
+  it("catches a migration that turns RLS off or adds an unprotected table, and lets the user accept the new table", () => {
+    const d = mkdtempSync(join(tmpdir(), "pawl-"));
+    dirs.push(d);
+    cpSync(join(__dirname, "fixtures", "rls-policy-removed", "before"), d, { recursive: true });
+    mkdirSync(join(d, ".git"));
+    run(d, ["init"]);
+    const file = join(d, "supabase/migrations/20240301000000_oops.sql");
+    writeFileSync(file, "alter table public.profiles disable row level security;\ncreate table public.invoices (id bigint);\n");
+
+    const post = run(d, ["hook", "post-tool"], hookIn(d, { file_path: file }));
+    const context = JSON.parse(post.stdout).hookSpecificOutput.additionalContext as string;
+    expect(context).toContain("Row-level security (per-user data access rules) is now off for public.profiles");
+    expect(context).toContain("New table public.invoices has row-level security");
+
+    const commit = run(d, ["hook", "pre-commit"], hookIn(d, { command: "git commit -m x" }));
+    expect(commit.status).toBe(2);
+
+    // Only the new table is accepted; the disabled RLS on profiles still blocks the commit.
+    expect(run(d, ["accept", "public.invoices", "internal", "table"]).status).toBe(0);
+    const after = run(d, ["hook", "pre-commit"], hookIn(d, { command: "git commit -m x" }));
+    expect(after.status).toBe(2);
+    expect(after.stderr).toContain("public.profiles");
+    expect(after.stderr).not.toContain("public.invoices");
   });
 });

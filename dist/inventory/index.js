@@ -7,8 +7,9 @@ const djangoRoutes_1 = require("./djangoRoutes");
 const expressRoutes_1 = require("./expressRoutes");
 const fastapiRoutes_1 = require("./fastapiRoutes");
 const flaskRoutes_1 = require("./flaskRoutes");
+const supabaseRls_1 = require("./supabaseRls");
 const nextRoutes_1 = require("./nextRoutes");
-exports.inventoriers = [nextRoutes_1.nextRoutes, expressRoutes_1.expressRoutes, fastapiRoutes_1.fastapiRoutes, flaskRoutes_1.flaskRoutes, djangoRoutes_1.djangoRoutes];
+exports.inventoriers = [nextRoutes_1.nextRoutes, expressRoutes_1.expressRoutes, fastapiRoutes_1.fastapiRoutes, flaskRoutes_1.flaskRoutes, djangoRoutes_1.djangoRoutes, supabaseRls_1.supabaseRls];
 const isTracked = (relPath) => exports.inventoriers.some((i) => i.handles(relPath));
 exports.isTracked = isTracked;
 /** Inventory the given files (relative paths) with every inventorier that wants them. */
@@ -21,6 +22,8 @@ async function scanFiles(root, files) {
         const r = await inv.scan(root, mine);
         result.controls.push(...r.controls);
         result.unparsed.push(...r.unparsed);
+        if (r.partial?.length)
+            result.partial = [...(result.partial ?? []), ...r.partial];
     }
     return result;
 }

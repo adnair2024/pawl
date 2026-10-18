@@ -1,5 +1,4 @@
 import { parse, registerDynamicLanguage, type SgNode } from "@ast-grep/napi";
-import python from "@ast-grep/lang-python";
 
 /** Python parsing and guard-learning helpers shared by the FastAPI, Flask and Django readers. */
 export type PyNode = SgNode;
@@ -9,7 +8,8 @@ let registered = false;
 export function parsePy(source: string): { root: PyNode } | { error: string } {
   try {
     if (!registered) {
-      registerDynamicLanguage({ python });
+      // Loaded on first parse so runs that only touch other languages skip the grammar.
+      registerDynamicLanguage({ python: require("@ast-grep/lang-python") as never });
       registered = true;
     }
     const root = parse("python", source).root();
