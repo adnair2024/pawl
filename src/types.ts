@@ -63,4 +63,9 @@ export interface Inventorier {
   /** Cheap filename test so hooks can re-inventory only touched files. */
   handles(relPath: string): boolean;
   scan(root: string, files: string[]): Promise<Inventory>;
+  /**
+   * Extra files whose controls can change when `files` change (e.g. an Express router
+   * inherits guards from the file that mounts it). Optional.
+   */
+  expand?(root: string, files: string[]): string[];
 }
