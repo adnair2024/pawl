@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.expressRoutes = void 0;
+exports.reqGuards = reqGuards;
 exports.factsForFile = factsForFile;
 exports.controlsFromFacts = controlsFromFacts;
 const node_fs_1 = require("node:fs");

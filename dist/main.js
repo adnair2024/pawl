@@ -20,6 +20,18 @@ function readHookInput() {
 const warn = (message) => {
     process.stdout.write(JSON.stringify({ systemMessage: `pawl: ${message}` }) + "\n");
 };
+/** Plain-language line about what the Next.js middleware checks and which routes it skips. */
+function middlewareNotes(controls) {
+    return controls.flatMap((c) => {
+        if (c.kind !== "middleware")
+            return [];
+        if (c.guards.length === 0)
+            return [`${c.file} runs but does not check who is calling, so it protects nothing by itself.`];
+        const skipped = c.routes.filter((r) => !c.covered.includes(r));
+        const base = `${c.file} checks ${c.guards.join(", ")} on ${c.covered.length} of ${c.routes.length} routes.`;
+        return [skipped.length ? `${base} It skips: ${skipped.slice(0, 8).join(", ")}${skipped.length > 8 ? ` and ${skipped.length - 8} more` : ""}.` : base];
+    });
+}
 const COMMIT = /\bgit\b[^|;&\n]*\bcommit\b/;
 const ACCEPT_PROMPT = /^\s*\/pawl:accept(?:\s+(\S+))?(?:\s+([\s\S]*?))?\s*$/;
 /**
@@ -104,6 +116,8 @@ async function status(root) {
     console.log(`Tracked controls: ${baseline.controls.length}`);
     for (const [k, n] of counts)
         console.log(`  ${k}: ${n}`);
+    for (const line of middlewareNotes(baseline.controls))
+        console.log(`Middleware: ${line}`);
     const headerNames = baseline.controls.flatMap((c) => (c.kind === "header" ? [c.header] : []));
     if (headerNames.length)
         console.log(`Security headers: ${headerNames.join(", ")}`);
@@ -155,6 +169,8 @@ async function main(argv) {
             if (openCors.length) {
                 console.log(`Warning: CORS (which websites may call your API) lets ANY website through in: ${openCors.map((c) => `${c.file} (${c.kind === "cors" ? c.origin : ""})`).join(", ")}. pawl records this as the starting point and will not block it, but if the API uses cookies or logins you probably want an explicit list of origins.`);
             }
+            for (const line of middlewareNotes(b.controls))
+                console.log(`Middleware: ${line}`);
             const headerNames = b.controls.flatMap((c) => (c.kind === "header" ? [c.header] : []));
             if (headerNames.length)
                 console.log(`Security headers found: ${headerNames.join(", ")}`);

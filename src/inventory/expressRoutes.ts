@@ -58,7 +58,7 @@ function bodyOf(arg: Node | undefined, named: Map<string, Node>): Node | null {
 }
 
 /** `if (!req.user) return res.status(401)...` and `const t = req.headers.authorization; if (!t) ...` */
-function reqGuards(body: Node): string[] {
+export function reqGuards(body: Node): string[] {
   const stmts = body.children().filter((c) => c.isNamed() && c.kind() !== "comment");
   const out: string[] = [];
   const credentialVars: string[] = [];

@@ -6,9 +6,10 @@ import { flaskRoutes } from "./flaskRoutes";
 import { supabaseRls } from "./supabaseRls";
 import { jsHeaders } from "./jsHeaders";
 import { pyHeaders } from "./pyHeaders";
+import { nextMiddleware } from "./nextMiddleware";
 import { nextRoutes } from "./nextRoutes";
 
-export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes, fastapiRoutes, flaskRoutes, djangoRoutes, supabaseRls, jsHeaders, pyHeaders];
+export const inventoriers: Inventorier[] = [nextRoutes, expressRoutes, fastapiRoutes, flaskRoutes, djangoRoutes, supabaseRls, jsHeaders, pyHeaders, nextMiddleware];
 
 export const isTracked = (relPath: string): boolean => inventoriers.some((i) => i.handles(relPath));
 

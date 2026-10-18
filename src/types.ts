@@ -30,6 +30,19 @@ export type Control =
       origin: "none" | "allowlist" | "wildcard" | "reflect";
     }
   | {
+      kind: "middleware";
+      id: string; // e.g. "middleware.ts#middleware"
+      file: string;
+      lang: Lang;
+      /** Auth checks the middleware itself runs on every request it sees. */
+      guards: string[];
+      /** The `config.matcher` patterns as written; "all" when there is none, "unknown" when it is not a literal. */
+      matcher: string[] | "all" | "unknown";
+      /** Routes (from app/**\/page|route files) the matcher lets through the middleware, and every route that existed. */
+      covered: string[];
+      routes: string[];
+    }
+  | {
       kind: "header";
       id: string; // e.g. "next.config.js#Content-Security-Policy"
       file: string;

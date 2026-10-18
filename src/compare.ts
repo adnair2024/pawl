@@ -73,6 +73,15 @@ function restoreGuard(framework: string, guard: string): string {
 }
 
 function removed(c: Control): Regression {
+  if (c.kind === "middleware") {
+    return {
+      controlId: c.id,
+      file: c.file,
+      kind: c.kind,
+      summary: `${c.file} no longer exports a middleware function (or is gone), so requests are no longer checked before they reach your routes.`,
+      restore: `Restore ${c.file} and its exported middleware function. ${accept(c.id)}`,
+    };
+  }
   if (c.kind === "header") {
     return {
       controlId: c.id,
@@ -142,6 +151,26 @@ function weaker(b: Control, a: Control): Regression | null {
         ...base,
         summary: `CORS (which websites may call your API) went from ${b.origin} to ${x.origin}.`,
         restore: `Go back to an explicit list of allowed origins. ${accept(b.id)}`,
+      };
+    }
+    case "middleware": {
+      const x = a as Of<"middleware">;
+      const lost = b.guards.filter((g) => !x.guards.includes(g));
+      // Coverage only matters when the middleware actually checks something.
+      const nowCovered = new Set(x.covered);
+      const stillExist = new Set(x.routes);
+      const uncovered = b.guards.length ? b.covered.filter((r) => stillExist.has(r) && !nowCovered.has(r)) : [];
+      if (lost.length === 0 && uncovered.length === 0) return null;
+      const parts = [
+        ...(lost.length ? [`no longer runs the auth check ${lost.join(", ")} on incoming requests`] : []),
+        ...(uncovered.length
+          ? [`its matcher no longer covers ${uncovered.slice(0, 5).join(", ")}${uncovered.length > 5 ? ` and ${uncovered.length - 5} more` : ""}, so requests to ${uncovered.length === 1 ? "that route skip" : "those routes skip"} the middleware`]
+          : []),
+      ];
+      return {
+        ...base,
+        summary: `${b.file}: ${parts.join(", and ")}.`,
+        restore: `${lost.length ? `Put the ${lost[0]} check back in the middleware. ` : ""}${uncovered.length ? "Widen config.matcher so it covers those routes again. " : ""}${accept(b.id)}`,
       };
     }
     case "header":

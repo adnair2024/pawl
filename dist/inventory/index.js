@@ -10,8 +10,9 @@ const flaskRoutes_1 = require("./flaskRoutes");
 const supabaseRls_1 = require("./supabaseRls");
 const jsHeaders_1 = require("./jsHeaders");
 const pyHeaders_1 = require("./pyHeaders");
+const nextMiddleware_1 = require("./nextMiddleware");
 const nextRoutes_1 = require("./nextRoutes");
-exports.inventoriers = [nextRoutes_1.nextRoutes, expressRoutes_1.expressRoutes, fastapiRoutes_1.fastapiRoutes, flaskRoutes_1.flaskRoutes, djangoRoutes_1.djangoRoutes, supabaseRls_1.supabaseRls, jsHeaders_1.jsHeaders, pyHeaders_1.pyHeaders];
+exports.inventoriers = [nextRoutes_1.nextRoutes, expressRoutes_1.expressRoutes, fastapiRoutes_1.fastapiRoutes, flaskRoutes_1.flaskRoutes, djangoRoutes_1.djangoRoutes, supabaseRls_1.supabaseRls, jsHeaders_1.jsHeaders, pyHeaders_1.pyHeaders, nextMiddleware_1.nextMiddleware];
 const isTracked = (relPath) => exports.inventoriers.some((i) => i.handles(relPath));
 exports.isTracked = isTracked;
 /** Inventory the given files (relative paths) with every inventorier that wants them. */
