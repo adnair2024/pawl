@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import { join } from "node:path";
-import { isTestPath, listFiles } from "../files";
+import { isTestPath, listFiles, readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { FactsCache } from "./factsCache";
 import { CORS_ORIGIN_HEADER, HEADER_MARKER, canonicalHeader, controlsFromHeaderFacts, worstOrigin, type HeaderFacts, type Origin } from "./headerNames";
@@ -203,7 +203,7 @@ export function controlsFromFacts(all: PyHeaderFacts[]): Control[] {
 const wanted = (p: string): boolean => PY_FILE.test(p) && !isTestPath(p);
 const mentions = (root: string, file: string): boolean => {
   try {
-    return HEADER_MARKER.test(readFileSync(join(root, file), "utf8"));
+    return HEADER_MARKER.test(readSource(join(root, file)));
   } catch {
     return false;
   }
@@ -226,7 +226,7 @@ export const pyHeaders: Inventorier = {
       let st;
       try {
         st = statSync(join(root, f));
-        source = readFileSync(join(root, f), "utf8");
+        source = readSource(join(root, f));
       } catch {
         continue;
       }

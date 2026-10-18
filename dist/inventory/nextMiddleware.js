@@ -23,6 +23,10 @@ const unquote = (t) => t.replace(/^[`'"]|[`'"]$/g, "");
  * Returns null for anything we cannot read, so the caller can treat it as "unknown", not "safe".
  */
 function compileMatcher(pattern) {
+    // Patterns come from the repo being checked. Refuse ones that could run for a very long time:
+    // very long ones, and nested quantifiers like (a+)+ or (.*)*.
+    if (pattern.length > 300 || /\((?:[^()\\]|\\.)*[+*](?:[^()\\]|\\.)*\)[+*{]/.test(pattern))
+        return null;
     let out = "";
     let i = 0;
     const group = () => {
@@ -159,7 +163,7 @@ function helperGuards(root, name, tried = new Set()) {
     for (const f of (0, files_1.listFiles)(root).filter((p) => CODE_FILE.test(p) && !MIDDLEWARE_FILE.test(p))) {
         let src;
         try {
-            src = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+            src = (0, files_1.readSource)((0, node_path_1.join)(root, f));
         }
         catch {
             continue;
@@ -289,7 +293,7 @@ const hasDefinition = (root, name) => (0, files_1.listFiles)(root).some((f) => {
     if (!CODE_FILE.test(f) || MIDDLEWARE_FILE.test(f))
         return false;
     try {
-        return new RegExp(`function\\s+${name}\\b|(?:const|let)\\s+${name}\\s*=`).test((0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8"));
+        return new RegExp(`function\\s+${name}\\b|(?:const|let)\\s+${name}\\s*=`).test((0, files_1.readSource)((0, node_path_1.join)(root, f)));
     }
     catch {
         return false;
@@ -318,7 +322,14 @@ exports.nextMiddleware = {
             catch {
                 continue;
             }
-            const r = factsForMiddleware(root, f, (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8"), routes);
+            let source;
+            try {
+                source = (0, files_1.readSource)((0, node_path_1.join)(root, f));
+            }
+            catch {
+                continue;
+            }
+            const r = factsForMiddleware(root, f, source, routes);
             if ("error" in r)
                 result.unparsed.push({ file: f, reason: r.error });
             else {

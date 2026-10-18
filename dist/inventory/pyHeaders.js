@@ -217,7 +217,7 @@ function controlsFromFacts(all) {
 const wanted = (p) => PY_FILE.test(p) && !(0, files_1.isTestPath)(p);
 const mentions = (root, file) => {
     try {
-        return headerNames_1.HEADER_MARKER.test((0, node_fs_1.readFileSync)((0, node_path_1.join)(root, file), "utf8"));
+        return headerNames_1.HEADER_MARKER.test((0, files_1.readSource)((0, node_path_1.join)(root, file)));
     }
     catch {
         return false;
@@ -241,7 +241,7 @@ exports.pyHeaders = {
             let st;
             try {
                 st = (0, node_fs_1.statSync)((0, node_path_1.join)(root, f));
-                source = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+                source = (0, files_1.readSource)((0, node_path_1.join)(root, f));
             }
             catch {
                 continue;

@@ -50,4 +50,21 @@ describe("next route inventory", () => {
     expect(r.controls).toEqual([]);
     expect(r.unparsed).toHaveLength(1);
   });
+
+  it("counts the same auth check written in one line, and ignores lookalike checks on data", () => {
+    const guards = (body: string): string[] => {
+      const r = inventoryNextFile("app/api/x/route.ts", `export async function GET(req) {\n${body}\n  return Response.json({});\n}`);
+      const c = r.controls[0];
+      return c && c.kind === "route-auth" ? c.guards : ["<none>"];
+    };
+    // the inlined form Claude produced when asked to "simplify" a route
+    expect(guards('  if (!(await auth())?.user) return Response.json({}, { status: 401 });')).toEqual(["auth"]);
+    expect(guards('  if (!(await supabase.auth.getUser()).data.user) return NextResponse.json({}, { status: 401 });')).toEqual(["auth.getUser"]);
+    expect(guards('  const session = (await auth()) ?? redirect("/login");')).toEqual(["auth"]);
+    expect(guards('  const session = await auth();\n  if (!session?.user) return Response.json({}, { status: 401 });')).toEqual(["auth"]);
+    // checks that are about the data or the input, not who is calling
+    expect(guards('  if (!isValid(body)) return Response.json({}, { status: 400 });')).toEqual([]);
+    expect(guards('  if (rows.length === 0) throw new Error("empty");')).toEqual([]);
+    expect(guards('  if (!process.env.API_URL) throw new Error("missing");')).toEqual([]);
+  });
 });

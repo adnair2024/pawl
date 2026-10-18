@@ -2,7 +2,17 @@
   "name": "pawl",
   "version": "0.1.0",
   "description": "Stops AI-assisted edits from silently weakening an app's security controls (auth guards, RLS, CORS, headers).",
-  "author": { "name": "Ashwin Nair" },
+  "author": {
+    "name": "Ashwin Nair"
+  },
   "repository": "https://github.com/adnair2024/pawl",
-  "license": "MIT"
+  "homepage": "https://github.com/adnair2024/pawl",
+  "keywords": [
+    "security",
+    "guardrails",
+    "auth",
+    "supabase",
+    "nextjs",
+    "hooks"
+  ]
 }

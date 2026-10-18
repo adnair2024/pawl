@@ -58,8 +58,8 @@ describe("django view inventory", () => {
     expect(compare(before.controls, after.controls)).toEqual([]);
   });
 
-  it("re-reads every Django file when one changes, so a settings edit is caught", () => {
-    expect(expandFiles(fx("django-guard-removed", "before"), ["settings.py"])).toContain("shop/views.py");
+  it("re-reads every Django file when one changes, so a settings edit is caught", async () => {
+    expect(await expandFiles(fx("django-guard-removed", "before"), ["settings.py"])).toContain("shop/views.py");
   });
 
   it("reports a syntax error as unparsed, never as safe", () => {

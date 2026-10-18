@@ -35,7 +35,7 @@ export interface CheckResult {
  * re-inventoried and only their controls are compared (the fast path).
  */
 export async function check(root: string, baseline: Baseline, files?: string[]): Promise<CheckResult> {
-  const targets = files ? expandFiles(root, files) : undefined;
+  const targets = files ? await expandFiles(root, files) : undefined;
   const current = targets ? await scanFiles(root, targets) : await scanAll(root);
   const scope = targets ? new Set(targets) : undefined;
   const broken = new Set(current.unparsed.map((u) => u.file));

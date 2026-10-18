@@ -74,7 +74,7 @@ app.use(requireAuth);`);
 
   it("re-reads every Express file when one changes, so a mount edit is caught", async () => {
     const root = fx("express-guard-removed", "after");
-    const expanded = expandFiles(root, ["server.js"]);
+    const expanded = await expandFiles(root, ["server.js"]);
     expect(expanded).toContain("routes/admin.js");
     const inv = await scanFiles(root, expanded);
     expect(inv.controls.length).toBe(2);

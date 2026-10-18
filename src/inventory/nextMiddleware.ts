@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import { join } from "node:path";
-import { listFiles } from "../files";
+import { listFiles, readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { reqGuards } from "./expressRoutes";
 import { IDENTITY, denies, guardsInBody, isFn, normalizeCallee, parseJs, unwrapAwait, type Node } from "./jsGuards";
@@ -23,6 +23,9 @@ const unquote = (t: string): string => t.replace(/^[`'"]|[`'"]$/g, "");
  * Returns null for anything we cannot read, so the caller can treat it as "unknown", not "safe".
  */
 export function compileMatcher(pattern: string): RegExp | null {
+  // Patterns come from the repo being checked. Refuse ones that could run for a very long time:
+  // very long ones, and nested quantifiers like (a+)+ or (.*)*.
+  if (pattern.length > 300 || /\((?:[^()\\]|\\.)*[+*](?:[^()\\]|\\.)*\)[+*{]/.test(pattern)) return null;
   let out = "";
   let i = 0;
   const group = (): string | null => {
@@ -143,7 +146,7 @@ function helperGuards(root: string, name: string, tried = new Set<string>()): bo
   for (const f of listFiles(root).filter((p) => CODE_FILE.test(p) && !MIDDLEWARE_FILE.test(p))) {
     let src: string;
     try {
-      src = readFileSync(join(root, f), "utf8");
+      src = readSource(join(root, f));
     } catch {
       continue;
     }
@@ -259,7 +262,7 @@ const hasDefinition = (root: string, name: string): boolean =>
   listFiles(root).some((f) => {
     if (!CODE_FILE.test(f) || MIDDLEWARE_FILE.test(f)) return false;
     try {
-      return new RegExp(`function\\s+${name}\\b|(?:const|let)\\s+${name}\\s*=`).test(readFileSync(join(root, f), "utf8"));
+      return new RegExp(`function\\s+${name}\\b|(?:const|let)\\s+${name}\\s*=`).test(readSource(join(root, f)));
     } catch {
       return false;
     }
@@ -285,7 +288,13 @@ export const nextMiddleware: Inventorier = {
       } catch {
         continue;
       }
-      const r = factsForMiddleware(root, f, readFileSync(join(root, f), "utf8"), routes);
+      let source: string;
+      try {
+        source = readSource(join(root, f));
+      } catch {
+        continue;
+      }
+      const r = factsForMiddleware(root, f, source, routes);
       if ("error" in r) result.unparsed.push({ file: f, reason: r.error });
       else {
         if (r.control) result.controls.push(r.control);

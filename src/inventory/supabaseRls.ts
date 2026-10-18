@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import { join, posix } from "node:path";
-import { listFiles } from "../files";
+import { listFiles, readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { FactsCache } from "./factsCache";
 
@@ -228,7 +228,7 @@ export const supabaseRls: Inventorier = {
       let st;
       try {
         st = statSync(join(root, f));
-        sql = readFileSync(join(root, f), "utf8");
+        sql = readSource(join(root, f));
       } catch {
         continue;
       }

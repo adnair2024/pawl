@@ -84,5 +84,5 @@ export interface Inventorier {
    * Extra files whose controls can change when `files` change (e.g. an Express router
    * inherits guards from the file that mounts it). Optional.
    */
-  expand?(root: string, files: string[]): string[];
+  expand?(root: string, files: string[]): string[] | Promise<string[]>;
 }

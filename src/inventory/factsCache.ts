@@ -1,7 +1,18 @@
-import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+
+/** A short stable name for a project path. Not crypto: loading node:crypto costs more than a hook can spare. */
+function hash(text: string): string {
+  let h1 = 5381;
+  let h2 = 52711;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    h1 = (h1 * 33) ^ c;
+    h2 = (h2 * 31) ^ c;
+  }
+  return ((h1 >>> 0).toString(16) + (h2 >>> 0).toString(16)).padStart(16, "0");
+}
 
 interface Entry<T> { mtimeMs: number; size: number; facts: T }
 
@@ -16,7 +27,7 @@ export class FactsCache<T> {
   private readonly data: Record<string, Entry<T>>;
 
   constructor(name: string, root: string) {
-    this.path = join(tmpdir(), `pawl-${name}-${createHash("sha1").update(root).digest("hex").slice(0, 12)}.json`);
+    this.path = join(tmpdir(), `pawl-${name}-${hash(root)}.json`);
     try {
       this.data = JSON.parse(readFileSync(this.path, "utf8")) as Record<string, Entry<T>>;
     } catch {

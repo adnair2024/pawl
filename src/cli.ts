@@ -2,6 +2,8 @@
 // Thin launcher: load the real program inside a try so a missing dependency (for example
 // the native parser before first-run setup finishes) fails open instead of crashing a hook.
 try {
+  // Cache compiled JS between runs (Node 22+); hooks start a fresh process every time.
+  (require("node:module") as { enableCompileCache?: () => unknown }).enableCompileCache?.();
   require("./main");
 } catch (err) {
   const message = `pawl could not start, so no checks ran: ${String(err)}. If this is a fresh install, restart Claude Code so setup can finish.`;

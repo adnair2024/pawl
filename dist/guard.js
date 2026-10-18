@@ -10,8 +10,10 @@ const baseline_1 = require("./baseline");
 const compare_1 = require("./compare");
 const ledger_1 = require("./ledger");
 const ASK_USER = 'Ask the user to run it themselves: /pawl:accept <control-id> "<reason>" (or /pawl:init to re-snapshot). Do not work around this.';
-/** Commands that only look at .pawl/ are fine. */
-const READ_ONLY = /^\s*(cat|ls|find|stat|head|tail|less|grep|rg|wc|jq|diff|git\s+(diff|log|show|status|add|commit))\b/;
+/** A single command that only looks at files, never changes them. */
+const READ_ONLY = /^\s*(cat|ls|head|tail|less|grep|rg|wc|jq|diff|stat|file|git\s+(diff|log|show|status|add|commit|ls-files|check-ignore)|find\b(?!.*(-delete|-exec|-fprint|-ok)))\b/;
+/** Split a shell line into its simple commands so one safe `cat` cannot excuse a dangerous neighbour. */
+const segments = (cmd) => cmd.split(/&&|\|\||[;|\n]/).map((x) => x.trim()).filter(Boolean);
 /**
  * Why Claude may not run this tool call, or null if it may.
  * Only the user may lower the baseline, so Claude is kept away from the accept path
@@ -26,7 +28,9 @@ function guardReason(tool, input) {
         if (/\bcli\.js\b[^|;&\n]*\b(accept|init)\b|\bpawl\s+(accept|init)\b/.test(cmd)) {
             return `pawl: only the user may accept a weakened protection or re-snapshot the baseline. ${ASK_USER}`;
         }
-        if (/\.pawl\b/.test(cmd) && !READ_ONLY.test(cmd)) {
+        // Any segment that touches .pawl must be a plain read, with no redirect into it.
+        const risky = segments(cmd).some((seg) => /\.pawl\b/.test(seg) && (!READ_ONLY.test(seg) || />/.test(seg.replace(/2>&1|2>\/dev\/null/g, ""))));
+        if (risky) {
             return `pawl: .pawl/ holds the security baseline and accepted-change log; changing it from the shell would hide weakened protections. ${ASK_USER}`;
         }
     }

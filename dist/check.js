@@ -37,7 +37,7 @@ async function scanAll(root) {
  * re-inventoried and only their controls are compared (the fast path).
  */
 async function check(root, baseline, files) {
-    const targets = files ? (0, inventory_1.expandFiles)(root, files) : undefined;
+    const targets = files ? await (0, inventory_1.expandFiles)(root, files) : undefined;
     const current = targets ? await (0, inventory_1.scanFiles)(root, targets) : await scanAll(root);
     const scope = targets ? new Set(targets) : undefined;
     const broken = new Set(current.unparsed.map((u) => u.file));

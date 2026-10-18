@@ -1,0 +1,22 @@
+{
+  "name": "pawl",
+  "owner": {
+    "name": "Ashwin Nair"
+  },
+  "description": "pawl: a ratchet for your app's security controls.",
+  "plugins": [
+    {
+      "name": "pawl",
+      "source": "./",
+      "description": "Stops AI-assisted edits from silently weakening an app's security controls (auth guards, Supabase RLS, CORS, security headers).",
+      "version": "0.1.0",
+      "category": "security",
+      "keywords": [
+        "security",
+        "guardrails",
+        "supabase",
+        "nextjs"
+      ]
+    }
+  ]
+}

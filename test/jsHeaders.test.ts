@@ -95,8 +95,8 @@ describe("js security headers and CORS", () => {
     expect("error" in f ? [] : f.headers).toEqual([]);
   });
 
-  it("re-reads every header-setting file when one changes, but ignores test code", () => {
-    expect(expandFiles(fx("headers-js-moved", "after"), ["middleware.ts"])).toContain("server.js");
+  it("re-reads every header-setting file when one changes, but ignores test code", async () => {
+    expect(await expandFiles(fx("headers-js-moved", "after"), ["middleware.ts"])).toContain("server.js");
   });
 
   it("reports a syntax error and invalid vercel.json as unparsed, never as safe", () => {

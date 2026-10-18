@@ -103,6 +103,11 @@ describe("cli", () => {
         "echo '{}' > .pawl/baseline.json",
         "rm -rf .pawl",
         "sed -i s/a/b/ .pawl/ledger.jsonl",
+        // a harmless read next to a dangerous write must not excuse the write
+        "cat .pawl/baseline.json; rm .pawl/baseline.json",
+        "cat .pawl/baseline.json > .pawl/other.json",
+        "echo '{}' | tee .pawl/baseline.json",
+        "find .pawl -delete",
       ]) {
         const r = guard(d, "Bash", { command });
         expect(r.status, command).toBe(2);
@@ -114,7 +119,16 @@ describe("cli", () => {
 
     it("lets normal work and read-only looks at .pawl/ through", () => {
       const d = project();
-      for (const command of ["npm test", "cat .pawl/baseline.json", "git add .pawl", "git diff .pawl/"]) {
+      for (const command of [
+        "npm test",
+        "cat .pawl/baseline.json",
+        "git add .pawl",
+        "git diff .pawl/",
+        // compound reads, as Claude writes them when it looks around
+        'for f in app/api/*/route.ts; do echo "== $f"; cat $f; done; cat .pawl/baseline.json | head -50',
+        "ls -la .pawl && cat .pawl/ledger.jsonl 2>&1 | tail -5",
+        "find .pawl -name '*.json'",
+      ]) {
         expect(guard(d, "Bash", { command }).status, command).toBe(0);
       }
       expect(guard(d, "Edit", { file_path: join(d, "app/api/posts/route.ts") }).status).toBe(0);

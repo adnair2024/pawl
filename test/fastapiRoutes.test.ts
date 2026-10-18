@@ -86,7 +86,7 @@ describe("fastapi route inventory", () => {
 
   it("re-reads every FastAPI file when one changes, so a dependency edit is caught", async () => {
     const root = fx("fastapi-guard-removed", "after");
-    const expanded = expandFiles(root, ["app/deps.py"]);
+    const expanded = await expandFiles(root, ["app/deps.py"]);
     expect(expanded).toContain("app/routers/users.py");
     expect((await scanFiles(root, expanded)).controls.length).toBe(2);
   });

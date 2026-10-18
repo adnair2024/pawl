@@ -228,7 +228,7 @@ exports.supabaseRls = {
             let st;
             try {
                 st = (0, node_fs_1.statSync)((0, node_path_1.join)(root, f));
-                sql = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+                sql = (0, files_1.readSource)((0, node_path_1.join)(root, f));
             }
             catch {
                 continue;

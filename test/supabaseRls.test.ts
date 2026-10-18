@@ -74,8 +74,8 @@ describe("supabase rls inventory", () => {
     expect(shape(controlsFromSql([f]))).toEqual({ "public.b": { rls: true, policies: [] } });
   });
 
-  it("re-reads every migration when one changes", () => {
-    const expanded = expandFiles(fx("rls-policy-removed", "after"), ["supabase/migrations/20240201000000_oops.sql"]);
+  it("re-reads every migration when one changes", async () => {
+    const expanded = await expandFiles(fx("rls-policy-removed", "after"), ["supabase/migrations/20240201000000_oops.sql"]);
     expect(expanded).toContain("supabase/migrations/20240101000000_init.sql");
   });
 

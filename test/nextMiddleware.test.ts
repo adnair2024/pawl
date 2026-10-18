@@ -34,6 +34,14 @@ describe("next middleware matcher compiler", () => {
   it("returns null for patterns it cannot read instead of guessing", () => {
     expect(compileMatcher("/(unbalanced")).toBeNull();
   });
+  it("refuses patterns that could take exponential time on a hostile repo", () => {
+    expect(compileMatcher("/((a+)+)$")).toBeNull();
+    expect(compileMatcher("/(.*)*")).toBeNull();
+    expect(compileMatcher(`/${"a".repeat(400)}`)).toBeNull();
+    // ordinary quantifiers are fine
+    expect(compileMatcher("/blog/:slug*")).not.toBeNull();
+    expect(compileMatcher("/((?!api|_next).*)")).not.toBeNull();
+  });
 });
 
 describe("next middleware inventory", () => {
@@ -105,8 +113,8 @@ describe("next middleware inventory", () => {
     expect(dynamic.partial).toContain("could not be checked");
   });
 
-  it("re-reads the middleware when a route or helper changes, and reports syntax errors as unparsed", () => {
-    expect(expandFiles(fx("mw-narrowed", "before"), ["app/new/page.tsx"])).toContain("middleware.ts");
+  it("re-reads the middleware when a route or helper changes, and reports syntax errors as unparsed", async () => {
+    expect(await expandFiles(fx("mw-narrowed", "before"), ["app/new/page.tsx"])).toContain("middleware.ts");
     expect(factsForMiddleware("/x", "middleware.ts", "export function middleware( {", [])).toHaveProperty("error");
   });
 });

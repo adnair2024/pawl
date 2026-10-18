@@ -62,8 +62,8 @@ describe("flask route inventory", () => {
     expect(mk('@login_required\n@app.route("/x")\ndef x():\n    pass\n')).toEqual([]);
   });
 
-  it("re-reads every Flask file when one changes, so a decorator edit is caught", () => {
-    expect(expandFiles(fx("flask-guard-removed", "before"), ["auth.py"])).toContain("views/users.py");
+  it("re-reads every Flask file when one changes, so a decorator edit is caught", async () => {
+    expect(await expandFiles(fx("flask-guard-removed", "before"), ["auth.py"])).toContain("views/users.py");
   });
 
   it("reports a syntax error as unparsed, never as safe", () => {

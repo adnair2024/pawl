@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import { dirname, join, posix } from "node:path";
-import { listFiles } from "../files";
+import { listFiles, readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { FactsCache } from "./factsCache";
 import { boundNames, checksAndDenies, denies, guardsInBody, isFn, normalizeCallee, parseJs, unwrapAwait, type Node } from "./jsGuards";
@@ -267,7 +267,7 @@ export function controlsFromFacts(all: FileFacts[]): Control[] {
 
 const mentionsExpress = (root: string, file: string): boolean => {
   try {
-    return readFileSync(join(root, file), "utf8").includes("express");
+    return readSource(join(root, file)).includes("express");
   } catch {
     return false;
   }
@@ -291,7 +291,7 @@ export const expressRoutes: Inventorier = {
       let source: string;
       try {
         st = statSync(join(root, f));
-        source = readFileSync(join(root, f), "utf8");
+        source = readSource(join(root, f));
       } catch {
         continue;
       }

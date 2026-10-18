@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { guardsInBody, isFn, parseJs, unwrapAwait, GUARD_NAME, normalizeCallee, type Node } from "./jsGuards";
 
@@ -71,7 +71,7 @@ export const nextRoutes: Inventorier = {
     const result: Inventory = { controls: [], unparsed: [] };
     for (const f of files.filter((p) => CODE_FILE.test(p))) {
       let source: string;
-      try { source = readFileSync(join(root, f), "utf8"); } catch { continue; }
+      try { source = readSource(join(root, f)); } catch { continue; }
       if (!ROUTE_FILE.test(f) && !source.includes("use server")) continue;
       const r = inventoryNextFile(f, source);
       result.controls.push(...r.controls);

@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Thin launcher: load the real program inside a try so a missing dependency (for example
 // the native parser before first-run setup finishes) fails open instead of crashing a hook.
 try {
+    // Cache compiled JS between runs (Node 22+); hooks start a fresh process every time.
+    require("node:module").enableCompileCache?.();
     require("./main");
 }
 catch (err) {

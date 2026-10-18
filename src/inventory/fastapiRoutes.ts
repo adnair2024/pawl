@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs";
+import { statSync } from "node:fs";
 import { join } from "node:path";
-import { listFiles } from "../files";
+import { listFiles, readSource } from "../files";
 import type { Control, Inventorier, Inventory } from "../types";
 import { FactsCache } from "./factsCache";
 import { DefIndex, bodyDenies, importsOf, inlineGuards, keyword, lastSegment, parsePy, positional, resolveRef, strOf, type PyImport, type PyNode } from "./pyShared";
@@ -218,7 +218,7 @@ export function controlsFromFacts(all: PyFacts[]): Control[] {
 
 const mentionsFastapi = (root: string, file: string): boolean => {
   try {
-    const src = readFileSync(join(root, file), "utf8");
+    const src = readSource(join(root, file));
     return src.includes("fastapi") || src.includes("starlette");
   } catch {
     return false;
@@ -242,7 +242,7 @@ export const fastapiRoutes: Inventorier = {
       let st;
       try {
         st = statSync(join(root, f));
-        source = readFileSync(join(root, f), "utf8");
+        source = readSource(join(root, f));
       } catch {
         continue;
       }

@@ -84,6 +84,27 @@ function guardsInBody(body) {
     const guards = [];
     const add = (g) => { if (!guards.includes(g))
         guards.push(g); };
+    // The check can also be written in one line, with the identity call inside the condition:
+    //   if (!(await auth())?.user) return Response.json(..., { status: 401 })
+    //   const session = (await auth()) ?? redirect("/login")
+    for (const stmt of stmts) {
+        if (stmt.kind() === "return_statement")
+            break;
+        const refuses = stmt.kind() === "if_statement"
+            ? (() => {
+                const consequence = stmt.field("consequence");
+                return !!consequence && denies(consequence);
+            })()
+            : /(\?\?|\|\|)\s*(await\s+)?(redirect|permanentRedirect|notFound|unauthorized|forbidden)\(/.test(stmt.text());
+        if (!refuses)
+            continue;
+        const scope = stmt.kind() === "if_statement" ? stmt.field("condition") : stmt;
+        for (const call of scope?.findAll({ rule: { kind: "call_expression" } }) ?? []) {
+            const callee = call.field("function")?.text() ?? "";
+            if (!exports.DENY_CALLS.has((0, exports.lastSegment)(callee)) && (exports.IDENTITY.test(callee) || exports.GUARD_NAME.test(callee)))
+                add((0, exports.normalizeCallee)(callee));
+        }
+    }
     stmts.forEach((stmt, i) => {
         if (stmt.kind() === "return_statement")
             return;

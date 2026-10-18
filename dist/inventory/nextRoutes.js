@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nextRoutes = void 0;
 exports.inventoryNextFile = inventoryNextFile;
-const node_fs_1 = require("node:fs");
 const node_path_1 = require("node:path");
+const files_1 = require("../files");
 const jsGuards_1 = require("./jsGuards");
 const ROUTE_FILE = /(^|\/)app\/(.*\/)?route\.(ts|tsx|js|jsx|mjs)$/;
 const CODE_FILE = /\.(ts|tsx|js|jsx|mjs)$/;
@@ -72,7 +72,7 @@ exports.nextRoutes = {
         for (const f of files.filter((p) => CODE_FILE.test(p))) {
             let source;
             try {
-                source = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+                source = (0, files_1.readSource)((0, node_path_1.join)(root, f));
             }
             catch {
                 continue;

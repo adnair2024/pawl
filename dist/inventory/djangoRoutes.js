@@ -204,7 +204,7 @@ function controlsFromFacts(all) {
 }
 const mentionsDjango = (root, file) => {
     try {
-        const src = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, file), "utf8");
+        const src = (0, files_1.readSource)((0, node_path_1.join)(root, file));
         return src.includes("django") || src.includes("rest_framework");
     }
     catch {
@@ -229,7 +229,7 @@ exports.djangoRoutes = {
             let st;
             try {
                 st = (0, node_fs_1.statSync)((0, node_path_1.join)(root, f));
-                source = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+                source = (0, files_1.readSource)((0, node_path_1.join)(root, f));
             }
             catch {
                 continue;

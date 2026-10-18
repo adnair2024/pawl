@@ -278,7 +278,7 @@ function controlsFromFacts(all) {
 }
 const mentionsExpress = (root, file) => {
     try {
-        return (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, file), "utf8").includes("express");
+        return (0, files_1.readSource)((0, node_path_1.join)(root, file)).includes("express");
     }
     catch {
         return false;
@@ -303,7 +303,7 @@ exports.expressRoutes = {
             let source;
             try {
                 st = (0, node_fs_1.statSync)((0, node_path_1.join)(root, f));
-                source = (0, node_fs_1.readFileSync)((0, node_path_1.join)(root, f), "utf8");
+                source = (0, files_1.readSource)((0, node_path_1.join)(root, f));
             }
             catch {
                 continue;
