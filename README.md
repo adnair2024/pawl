@@ -31,6 +31,7 @@ The first session after installing runs a one-time `npm install` inside the plug
    - **Before `git commit`** pawl blocks the commit if a protection is weaker than the baseline.
 4. If you *want* a change that lowers protection, run **`/pawl:accept <control-id> <reason>`**. The reason is written to `.pawl/ledger.jsonl`, which is committed, so it shows up in code review.
 5. **`/pawl:status`** shows what is tracked, what is currently weaker, and recently accepted changes.
+6. **`/pawl:log [count]`** prints the audit log: every file Claude edited (tool, lines added/removed) and, after `/pawl:log sync`, every git commit (flagged `[claude]` when co-authored by Claude). The log is `.pawl/audit.jsonl`. It is append-only, and Claude cannot write to it. `sync` only adds commits that are not logged yet, so it is safe to repeat; `/pawl:log sync --since "2 weeks ago"` skips older history.
 
 Only you can accept: Claude is blocked from running `accept`, from re-running `init`, and from editing anything inside `.pawl/`.
 

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = require("node:fs");
+const audit_1 = require("./audit");
 const baseline_1 = require("./baseline");
 const check_1 = require("./check");
 const guard_1 = require("./guard");
@@ -67,6 +68,9 @@ async function hook(kind) {
         if (reason)
             process.stderr.write(reason + "\n");
         return reason ? 2 : 0;
+    }
+    if (kind === "post-tool" && file && !file.startsWith("..") && !/^\.pawl(\/|$)/.test(file)) {
+        (0, audit_1.recordEdit)(root, input.tool_name ?? "Edit", file, input.tool_input ?? {}, input.session_id);
     }
     if (kind === "post-tool" && (!file || file.startsWith("..") || !(0, inventory_1.isTracked)(file)))
         return 0;
@@ -143,6 +147,36 @@ async function status(root) {
     if (ledger.length)
         console.log("\nRecent accepted changes:\n" + ledger.map((l) => `- ${l.timestamp} ${l.controlId}: ${l.reason}`).join("\n"));
 }
+/** `pawl log [count]` shows recent changes; `pawl log sync` backfills from git history. */
+function log(root, args) {
+    if (args[0] === "sync") {
+        const flag = args.indexOf("--since");
+        const since = flag === -1 ? undefined : args.slice(flag + 1).join(" ").trim();
+        if (flag !== -1 ? !since || args.slice(1, flag).length > 0 : args.length > 1) {
+            console.error('usage: pawl log sync [--since <date>]   (for example --since 2026-01-01 or --since "2 weeks ago")');
+            return 1;
+        }
+        const r = (0, audit_1.syncFromGit)(root, since);
+        if (!r.ok) {
+            console.error(`pawl: ${r.error}`);
+            return 1;
+        }
+        console.log(`pawl: logged ${r.added} new commit(s) from git (${r.alreadyLogged} already in the audit log).`);
+        return 0;
+    }
+    const count = Number(args[0] ?? 20);
+    if (!Number.isInteger(count) || count < 1) {
+        console.error("usage: pawl log [count] | pawl log sync [--since <date>]");
+        return 1;
+    }
+    const entries = (0, audit_1.readAudit)(root);
+    if (entries.length === 0) {
+        console.log("pawl: the audit log is empty. Edits are logged as Claude makes them; run `pawl log sync` to add past commits.");
+        return 0;
+    }
+    console.log(entries.slice(-count).map(audit_1.formatEntry).join("\n"));
+    return 0;
+}
 async function main(argv) {
     const [cmd, ...rest] = argv;
     const root = (0, check_1.findRoot)(process.cwd());
@@ -197,8 +231,10 @@ async function main(argv) {
             console.log(r.ok ? `pawl: accepted ${r.controlId}; baseline updated and logged.` : `pawl: ${r.error}`);
             return r.ok ? 0 : 1;
         }
+        case "log":
+            return log(root, rest);
         default:
-            console.error("usage: pawl <init|status|accept|hook>");
+            console.error("usage: pawl <init|status|accept|log|hook>");
             return 1;
     }
 }

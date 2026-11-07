@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { formatEntry, readAudit, recordEdit, syncFromGit, type EditInput } from "./audit";
 import { readBaseline, writeBaseline } from "./baseline";
 import { accept, check, findRoot, init, ratchet, toRelative } from "./check";
 import { guardReason, unexplainedBaselineChanges } from "./guard";
@@ -11,9 +12,10 @@ import { formatRegressions } from "./report";
 interface HookInput {
   cwd?: string;
   prompt?: string;
+  session_id?: string;
   stop_hook_active?: boolean;
   tool_name?: string;
-  tool_input?: { file_path?: string; command?: string };
+  tool_input?: EditInput & { command?: string };
 }
 
 function readHookInput(): HookInput {
@@ -79,6 +81,9 @@ async function hook(kind: string): Promise<number> {
     const reason = guardReason(input.tool_name, input.tool_input ?? {});
     if (reason) process.stderr.write(reason + "\n");
     return reason ? 2 : 0;
+  }
+  if (kind === "post-tool" && file && !file.startsWith("..") && !/^\.pawl(\/|$)/.test(file)) {
+    recordEdit(root, input.tool_name ?? "Edit", file, input.tool_input ?? {}, input.session_id);
   }
   if (kind === "post-tool" && (!file || file.startsWith("..") || !isTracked(file))) return 0;
   if (kind === "pre-commit" && !COMMIT.test(input.tool_input?.command ?? "")) return 0;
@@ -151,6 +156,37 @@ async function status(root: string): Promise<void> {
   if (ledger.length) console.log("\nRecent accepted changes:\n" + ledger.map((l) => `- ${l.timestamp} ${l.controlId}: ${l.reason}`).join("\n"));
 }
 
+/** `pawl log [count]` shows recent changes; `pawl log sync` backfills from git history. */
+function log(root: string, args: string[]): number {
+  if (args[0] === "sync") {
+    const flag = args.indexOf("--since");
+    const since = flag === -1 ? undefined : args.slice(flag + 1).join(" ").trim();
+    if (flag !== -1 ? !since || args.slice(1, flag).length > 0 : args.length > 1) {
+      console.error('usage: pawl log sync [--since <date>]   (for example --since 2026-01-01 or --since "2 weeks ago")');
+      return 1;
+    }
+    const r = syncFromGit(root, since);
+    if (!r.ok) {
+      console.error(`pawl: ${r.error}`);
+      return 1;
+    }
+    console.log(`pawl: logged ${r.added} new commit(s) from git (${r.alreadyLogged} already in the audit log).`);
+    return 0;
+  }
+  const count = Number(args[0] ?? 20);
+  if (!Number.isInteger(count) || count < 1) {
+    console.error("usage: pawl log [count] | pawl log sync [--since <date>]");
+    return 1;
+  }
+  const entries = readAudit(root);
+  if (entries.length === 0) {
+    console.log("pawl: the audit log is empty. Edits are logged as Claude makes them; run `pawl log sync` to add past commits.");
+    return 0;
+  }
+  console.log(entries.slice(-count).map(formatEntry).join("\n"));
+  return 0;
+}
+
 async function main(argv: string[]): Promise<number> {
   const [cmd, ...rest] = argv;
   const root = findRoot(process.cwd());
@@ -198,8 +234,10 @@ async function main(argv: string[]): Promise<number> {
       console.log(r.ok ? `pawl: accepted ${r.controlId}; baseline updated and logged.` : `pawl: ${r.error}`);
       return r.ok ? 0 : 1;
     }
+    case "log":
+      return log(root, rest);
     default:
-      console.error("usage: pawl <init|status|accept|hook>");
+      console.error("usage: pawl <init|status|accept|log|hook>");
       return 1;
   }
 }
